@@ -1,74 +1,145 @@
-import { Music, Calendar, DollarSign } from 'lucide-react';
+import { Music, Calendar, DollarSign, CheckCircle2 } from 'lucide-react';
+import { Footer } from '../components/Footer';
+import { HeroSection } from '../components/HeroSection';
+import { ClassCard } from '../components/ClassCard';
+import { FeatureSection } from '../components/FeatureSection';
+import { TestimonialsSection } from '../components/TestimonialsSection';
+import { GallerySection } from '../components/GallerySection';
+import { FAQSection } from '../components/FAQSection';
+import { FloatingContact } from '../components/FloatingContact';
+import { SectionNav } from '../components/SectionNav';
+import { testimonials, galleryImages, faqs } from '../data/guitarData';
+import { Suspense } from 'react';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export function GuitarraPage() {
+  const sections = [
+    { id: 'hero', label: 'Inicio' },
+    { id: 'clases', label: 'Clases' },
+    { id: 'galeria', label: 'Galería' },
+    { id: 'beneficios', label: 'Beneficios' },
+    { id: 'testimonios', label: 'Testimonios' },
+    { id: 'faq', label: 'FAQ' }
+  ];
+
   const clases = [
     {
-      nivel: "Principiante",
-      horario: "Lunes y Miércoles 16:00 - 17:30",
-      precio: "$300/hora",
-      descripcion: "Introducción a la guitarra, acordes básicos y ritmos sencillos"
+      nivel: "Básico",
+      horario: "Lunes a Viernes 15:00 - 19:00",
+      precio: "$200/hora",
+      descripcion: "Introducción a la guitarra y conceptos fundamentales",
+      beneficios: [
+        "Postura y técnica básica",
+        "Acordes principales",
+        "Ritmos básicos",
+        "Lectura de tablaturas"
+      ]
     },
     {
       nivel: "Intermedio",
-      horario: "Martes y Jueves 17:00 - 18:30",
-      precio: "$350/hora",
-      descripcion: "Técnicas avanzadas, teoría musical y práctica en conjunto"
+      horario: "Lunes a Viernes 16:00 - 20:00",
+      precio: "$250/hora",
+      descripcion: "Perfecciona tu técnica y amplía tu repertorio",
+      beneficios: [
+        "Técnicas de punteo",
+        "Escalas y arpegios",
+        "Teoría musical",
+        "Práctica en grupo"
+      ]
     },
     {
       nivel: "Avanzado",
-      horario: "Sábados 10:00 - 12:00",
-      precio: "$400/hora",
-      descripcion: "Composición, improvisación y estilos específicos"
+      horario: "Sábados 10:00 - 14:00",
+      precio: "$300/hora",
+      descripcion: "Domina técnicas avanzadas y desarrolla tu estilo",
+      beneficios: [
+        "Técnicas avanzadas",
+        "Improvisación",
+        "Composición",
+        "Presentaciones en vivo"
+      ]
+    }
+  ];
+
+  const features = [
+    {
+      icon: Music,
+      title: "Clases Personalizadas",
+      description: "Adaptamos las lecciones a tu ritmo y estilo de aprendizaje"
+    },
+    {
+      icon: Calendar,
+      title: "Horarios Flexibles",
+      description: "Diferentes horarios para adaptarnos a tu disponibilidad"
+    },
+    {
+      icon: CheckCircle2,
+      title: "Profesores Expertos",
+      description: "Instructores calificados con amplia experiencia en enseñanza"
     }
   ];
 
   return (
-    <div className="pt-16">
-      <div className="relative h-[50vh]">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80")'
-          }}
-        >
-          <div className="absolute inset-0 bg-black/50"></div>
-        </div>
-        <div className="relative h-full flex items-center justify-center text-white">
-          <div className="text-center">
-            <h1 className="text-5xl font-bold mb-4">Clases de Guitarra</h1>
-            <p className="text-xl max-w-2xl mx-auto">
-              Aprende a tocar guitarra con profesores experimentados en un ambiente 
-              acogedor y profesional
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <SectionNav sections={sections} />
+      <FloatingContact />
 
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {clases.map((clase, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="bg-amber-600 p-4">
-                <h3 className="text-xl font-bold text-white">{clase.nivel}</h3>
-              </div>
-              <div className="p-6 space-y-4">
-                <div className="flex items-center text-gray-600">
-                  <Calendar className="w-5 h-5 mr-2" />
-                  <span>{clase.horario}</span>
-                </div>
-                <div className="flex items-center text-gray-600">
-                  <DollarSign className="w-5 h-5 mr-2" />
-                  <span>{clase.precio}</span>
-                </div>
-                <p className="text-gray-600">{clase.descripcion}</p>
-                <button className="w-full bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700 transition-colors">
-                  Reservar Clase
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <section id="hero">
+        <HeroSection
+          title="Clases de Guitarra"
+          description="Aprende a tocar guitarra con clases personalizadas para todos los niveles"
+          backgroundImage="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&q=80"
+        />
+      </section>
+
+      {/* Clases Section */}
+      <section id="clases" className="max-w-6xl mx-auto px-4 py-20">
+        <Suspense fallback={<LoadingSpinner size="lg" />}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {clases.map((clase, index) => (
+              <ClassCard
+                key={index}
+                {...clase}
+                formUrl="https://forms.gle/your-form-url-here"
+              />
+            ))}
+          </div>
+        </Suspense>
+      </section>
+
+      <section id="galeria">
+        <Suspense fallback={<LoadingSpinner size="lg" />}>
+          <GallerySection
+            title="Nuestra Experiencia"
+            description="Conoce nuestras instalaciones y el ambiente de aprendizaje"
+            images={galleryImages}
+          />
+        </Suspense>
+      </section>
+
+      <section id="beneficios">
+        <FeatureSection
+          title="¿Por qué tomar clases con nosotros?"
+          description="Nuestro método de enseñanza personalizado y nuestros profesores experimentados te ayudarán a alcanzar tus metas musicales."
+          features={features}
+        />
+      </section>
+
+      <section id="testimonios">
+        <Suspense fallback={<LoadingSpinner size="lg" />}>
+          <TestimonialsSection testimonials={testimonials} />
+        </Suspense>
+      </section>
+
+      <section id="faq">
+        <FAQSection
+          title="Preguntas Frecuentes"
+          description="Resolvemos tus dudas sobre nuestras clases de guitarra"
+          faqs={faqs}
+        />
+      </section>
+
+      <Footer />
     </div>
   );
 }

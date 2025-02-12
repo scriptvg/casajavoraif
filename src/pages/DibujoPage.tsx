@@ -1,73 +1,126 @@
-import { PencilRuler, Calendar, DollarSign } from 'lucide-react';
+import { Palette, Calendar, DollarSign, CheckCircle2 } from 'lucide-react';
+import { Footer } from '../components/Footer';
+import { HeroSection } from '../components/HeroSection';
+import { ClassCard } from '../components/ClassCard';
+import { FeatureSection } from '../components/FeatureSection';
+import { TestimonialsSection } from '../components/TestimonialsSection';
+import { GallerySection } from '../components/GallerySection';
+import { FAQSection } from '../components/FAQSection';
+import { FloatingContact } from '../components/FloatingContact';
+import { SectionNav } from '../components/SectionNav';
+import { dibujoData } from '../data/pageData';
+import { Suspense } from 'react';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export function DibujoPage() {
+  const sections = [
+    { id: 'hero', label: 'Inicio' },
+    { id: 'clases', label: 'Clases' },
+    { id: 'galeria', label: 'Galería' },
+    { id: 'beneficios', label: 'Beneficios' },
+    { id: 'testimonios', label: 'Testimonios' },
+    { id: 'faq', label: 'FAQ' }
+  ];
+
   const clases = [
     {
-      tipo: "Dibujo Básico",
-      horario: "Lunes y Miércoles 10:00 - 12:00",
+      nivel: "Básico",
+      horario: "Lunes a Viernes 15:00 - 19:00",
+      precio: "$200/hora",
+      descripcion: "Introducción al dibujo y técnicas fundamentales",
+      beneficios: [
+        "Técnicas básicas de dibujo",
+        "Teoría del color",
+        "Composición básica",
+        "Materiales incluidos"
+      ]
+    },
+    {
+      nivel: "Intermedio",
+      horario: "Lunes a Viernes 16:00 - 20:00",
       precio: "$250/hora",
-      descripcion: "Fundamentos del dibujo, perspectiva y composición"
+      descripcion: "Perfecciona tus técnicas y explora nuevos medios",
+      beneficios: [
+        "Técnicas de sombreado",
+        "Perspectiva",
+        "Dibujo de figuras",
+        "Carboncillo y pasteles"
+      ]
     },
     {
-      tipo: "Dibujo Anatómico",
-      horario: "Martes y Jueves 16:00 - 18:00",
+      nivel: "Avanzado",
+      horario: "Sábados 10:00 - 14:00",
       precio: "$300/hora",
-      descripcion: "Estudio de la figura humana y anatomía artística"
-    },
-    {
-      tipo: "Técnicas Mixtas",
-      horario: "Viernes 15:00 - 18:00",
-      precio: "$350/hora",
-      descripcion: "Exploración de diferentes medios y técnicas artísticas"
+      descripcion: "Desarrolla tu estilo personal y proyectos artísticos",
+      beneficios: [
+        "Técnicas mixtas",
+        "Desarrollo de portafolio",
+        "Exposiciones",
+        "Proyectos personales"
+      ]
     }
   ];
 
   return (
-    <div className="pt-16">
-      <div className="relative h-[50vh]">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80")'
-          }}
-        >
-          <div className="absolute inset-0 bg-black/50"></div>
-        </div>
-        <div className="relative h-full flex items-center justify-center text-white">
-          <div className="text-center">
-            <h1 className="text-5xl font-bold mb-4">Dibujo Artístico</h1>
-            <p className="text-xl max-w-2xl mx-auto">
-              Desarrolla tu creatividad y técnica artística con nuestros cursos especializados
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <SectionNav sections={sections} />
+      <FloatingContact />
 
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {clases.map((clase, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="bg-purple-600 p-4">
-                <h3 className="text-xl font-bold text-white">{clase.tipo}</h3>
-              </div>
-              <div className="p-6 space-y-4">
-                <div className="flex items-center text-gray-600">
-                  <Calendar className="w-5 h-5 mr-2" />
-                  <span>{clase.horario}</span>
-                </div>
-                <div className="flex items-center text-gray-600">
-                  <DollarSign className="w-5 h-5 mr-2" />
-                  <span>{clase.precio}</span>
-                </div>
-                <p className="text-gray-600">{clase.descripcion}</p>
-                <button className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors">
-                  Reservar Clase
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <section id="hero">
+        <HeroSection
+          title="Clases de Dibujo"
+          description="Aprende a expresarte a través del arte con clases personalizadas para todos los niveles"
+          backgroundImage="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80"
+        />
+      </section>
+
+      <section id="clases" className="max-w-6xl mx-auto px-4 py-20">
+        <Suspense fallback={<LoadingSpinner size="lg" />}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {clases.map((clase, index) => (
+              <ClassCard
+                key={index}
+                {...clase}
+                formUrl="https://forms.gle/your-form-url-here"
+              />
+            ))}
+          </div>
+        </Suspense>
+      </section>
+
+      <section id="galeria">
+        <Suspense fallback={<LoadingSpinner size="lg" />}>
+          <GallerySection
+            title="Galería de Arte"
+            description="Conoce los trabajos de nuestros estudiantes y el ambiente artístico"
+            images={dibujoData.galleryImages}
+          />
+        </Suspense>
+      </section>
+
+      <section id="beneficios">
+        <FeatureSection
+          title="¿Por qué tomar clases con nosotros?"
+          description="Nuestro método de enseñanza personalizado y nuestros profesores experimentados te ayudarán a desarrollar tu talento artístico."
+          features={features}
+        />
+      </section>
+
+      <section id="testimonios">
+        <Suspense fallback={<LoadingSpinner size="lg" />}>
+          <TestimonialsSection testimonials={dibujoData.testimonials} />
+        </Suspense>
+      </section>
+
+      <section id="faq">
+        <FAQSection
+          title="Preguntas Frecuentes"
+          description="Resolvemos tus dudas sobre nuestras clases de dibujo"
+          faqs={dibujoData.faqs}
+        />
+      </section>
+
+      <Footer />
     </div>
   );
 }
