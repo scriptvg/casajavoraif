@@ -28,7 +28,7 @@ export function ClasesPage() {
     {
       icon: Star,
       title: "Todos los Niveles",
-      description: "Clases adaptadas a tu nivel y objetivos musicales"
+      description: "Clasesw adaptadas a tu nivel y objetivos musicales"
     },
     {
       icon: Users,
